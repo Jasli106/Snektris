@@ -166,4 +166,6 @@ Game = {
     Game.start();
   }
 
+  //add class maybe? 
+  
 }
