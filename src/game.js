@@ -129,23 +129,26 @@ Game = {
       x: snake.x,
       dir: snakeBlocks[snakeBlocks.length-1].dir
     }
-    console.log(snakeBlocks)
     snakeBlocks.push(seg);
     
   },
 
   updateSnake: function(len) {
-    for(var i = 1; i < len; i++) {
-      snakeBlocks[i].dir = tempDirs[i-1].dir;
-    }
-    console.log(snakeBlocks)
-    //console.log(tempDirs);
-    tempDirs = [];
-    for(var i = 0; i < len; i++) {
+    //Add all directions to tempDirs
+    for(let i = 0; i < len; i++) {
       tempDirs.push(snakeBlocks[i].dir);
-      //console.log(tempDirs);
     }
+
+    //Update snake segment directions
+    for(let i = 1; i < len; i++) {
+      snakeBlocks[i].dir = tempDirs[i-1];
+    }
+    console.log(snakeBlocks);
+    tempDirs = [];
+
+    //Update snake segment coordinates
     
+
   },
 
 
