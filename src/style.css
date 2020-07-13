@@ -1,0 +1,16 @@
+:root {
+    --tile-size: 20px; 
+  }
+body{
+    color: green
+}
+table{
+    border-collapse: collapse;
+}
+td{
+    border-width: 1px;
+    border-color: gray;
+    border-style: solid;
+    height: var(--tile-size);
+    width: var(--tile-size);
+}
