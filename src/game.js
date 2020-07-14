@@ -22,6 +22,7 @@ Game = {
   },
 
   //Drawing snake head block
+  //TODO: refactor so that func works with any block inputted
   drawBlock: function() {
     var parent = document.getElementById("grid");
     parent.rows[snake.y].cells[snake.x].style.backgroundColor = "black";
@@ -123,12 +124,33 @@ Game = {
     }
   },
 
+  //Adding a section to the snake
   addChild: function() {
+    let endBlock = snakeBlocks[snakeBlocks.length-1];
     var seg = {
-      y: snake.y,
-      x: snake.x,
-      dir: snakeBlocks[snakeBlocks.length-1].dir
+      //calculate coordinates based on direction
+      y: endBlock.y,
+      x: endBlock.x,
+      dir: endBlock.dir
     }
+    switch(seg.dir) {
+      case "up":
+      seg.y = endBlock.y + 1;
+      break;
+
+    case "down":
+      seg.y = endBlock.y - 1;
+      break;
+
+    case "left":
+      seg.y = endBlock.x + 1;
+      break;
+
+    case "right":
+      seg.y = endBlock.y - 1;
+      break;
+    }
+
     snakeBlocks.push(seg);
     
   },
@@ -146,8 +168,28 @@ Game = {
     console.log(snakeBlocks);
     tempDirs = [];
 
+
     //Update snake segment coordinates
-    
+    for(let i = 1; i < len; i++) {
+      switch(snakeBlocks[i].dir) {
+        case "up":
+        snakeBlocks[i].y--;
+        break;
+
+      case "down":
+        snakeBlocks[i].y++;
+        break;
+
+      case "left":
+        snakeBlocks[i].x--;
+        break;
+
+      case "right":
+        snakeBlocks[i].x++;
+        break;
+      }
+    }
+
 
   },
 
@@ -168,7 +210,5 @@ Game = {
     Game.drawBlock();
     Game.start();
   }
-
-  //add class maybe? 
   
 }
