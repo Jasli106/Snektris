@@ -22,10 +22,9 @@ Game = {
   },
 
   //Drawing snake head block
-  //TODO: refactor so that func works with any block inputted
-  drawBlock: function() {
+  drawBlock: function(block) {
     var parent = document.getElementById("grid");
-    parent.rows[snake.y].cells[snake.x].style.backgroundColor = "black";
+    parent.rows[block.y].cells[block.x].style.backgroundColor = "black";
   },
 
   //Generate snake segment (goal/thing to collect)
@@ -118,7 +117,7 @@ Game = {
     }
 
     else {
-      Game.drawBlock();
+      Game.drawBlock(snake);
       Game.updateSnake(snakeBlocks.length);
       Game.checkSegment();
     }
@@ -165,7 +164,7 @@ Game = {
     for(let i = 1; i < len; i++) {
       snakeBlocks[i].dir = tempDirs[i-1];
     }
-    console.log(snakeBlocks);
+    //console.log(snakeBlocks);
     tempDirs = [];
 
 
@@ -190,6 +189,15 @@ Game = {
       }
     }
 
+    //console.log(snakeBlocks)
+
+    //Visuals
+    for(let i = 1; i < len; i++) {
+      console.log(snakeBlocks[i])
+      Game.clearBlock(snakeBlocks[i])
+      Game.drawBlock(snakeBlocks[i])
+    }
+
 
   },
 
@@ -207,7 +215,7 @@ Game = {
     Game.drawGrid();
     var parent = document.getElementById("grid");
     snake = {y: Math.floor(Math.random() * y), x: Math.floor(Math.random() * x), dir: direction};
-    Game.drawBlock();
+    Game.drawBlock(snake);
     Game.start();
   }
   
