@@ -1,9 +1,7 @@
-var timer;
+var timer, snake, segment;
 var direction = "up";
-var snake;
 var x = 10;
 var y = 20;
-var segment;
 var snakeBlocks = new Array();
 var tempDirs = new Array();
 
@@ -31,7 +29,6 @@ Game = {
   createSegment: function() {
     var x2 = Math.floor((Math.random() * x));
     var y2 = Math.floor((Math.random() * y));
-
     segment = {x: x2, y: y2};
     var parent = document.getElementById("grid");
     parent.rows[y2].cells[x2].style.backgroundColor = "red";
@@ -39,8 +36,7 @@ Game = {
 
   //When segment collected
   checkSegment: function() {
-    if (snake.x == segment.x && snake.y == segment.y)
-    {
+    if (snake.x == segment.x && snake.y == segment.y) {
         Game.createSegment();
         Game.addChild();
     }
@@ -48,28 +44,23 @@ Game = {
 
   //Check which key was pressed
   checkKey: function(e) {
-
     e = e || window.event;
-
     if (e.keyCode == '38') {
       // up arrow
       if (snakeBlocks.length == 1 || (snakeBlocks.length > 1 && direction != "down")){
         direction = "up";
       }
-    }
-    else if (e.keyCode == '40') {
+    } else if (e.keyCode == '40') {
       // down arrow
       if (snakeBlocks.length == 1 || (snakeBlocks.length > 1 && direction != "up")) {
         direction = "down";
       }
-    }
-    else if (e.keyCode == '37') {
+    } else if (e.keyCode == '37') {
       // left arrow
       if (snakeBlocks.length == 1 || (snakeBlocks.length > 1 && direction != "right")){
         direction = "left";
       }
-    }
-    else if (e.keyCode == '39') {
+    } else if (e.keyCode == '39') {
       // right arrow
       if (snakeBlocks.length == 1 || (snakeBlocks.length > 1 && direction != "left")){
         direction = "right";
@@ -94,8 +85,7 @@ Game = {
     // determines the new x and y values when changing direction
     snake.dir = direction;
 
-    switch(direction)
-    {
+    switch(direction) {
       case "up":
         snake.y--;
         break;
@@ -117,9 +107,7 @@ Game = {
     if (snake.x < 0 || snake.y < 0 || snake.x >= x || snake.y >= y) {
       document.getElementById("title").innerHTML = "Lost";
       clearInterval(timer);
-    }
-
-    else {
+    } else {
       Game.drawBlock(snake);
       Game.checkSegment();
     }
@@ -128,8 +116,6 @@ Game = {
   //Adding a section to the snake
   addChild: function() {
     let endBlock = snakeBlocks[snakeBlocks.length-1];
-
-
     var seg = {
       //calculate coordinates based on direction
       y: endBlock.y,
@@ -138,25 +124,22 @@ Game = {
     }
     switch(seg.dir) {
       case "up":
-      seg.y = endBlock.y + 1;
-      break;
+        seg.y = endBlock.y + 1;
+        break;
 
-    case "down":
-      seg.y = endBlock.y - 1;
-      break;
+      case "down":
+        seg.y = endBlock.y - 1;
+        break;
 
-    case "left":
-      seg.x = endBlock.x + 1;
-      break;
+      case "left":
+        seg.x = endBlock.x + 1;
+        break;
 
-    case "right":
-      seg.x = endBlock.x - 1;
-      break;
+      case "right":
+        seg.x = endBlock.x - 1;
+        break;
     }
-
-
-    snakeBlocks.push(seg);
-    
+    snakeBlocks.push(seg);    
   },
 
   updateSnake: function(len) {
@@ -164,7 +147,6 @@ Game = {
     for(let i = 0; i < len; i++) {
       tempDirs.push(snakeBlocks[i].dir);
     }
-    //console.log(tempDirs);
 
     //Update snake segment directions
     for(let i = 1; i < len; i++) {
@@ -173,35 +155,31 @@ Game = {
     }
     tempDirs = [];
 
-
     //Update snake segment coordinates
     for(let i = 1; i < len; i++) {
       switch(snakeBlocks[i].dir) {
         case "up":
-        snakeBlocks[i].y--;
-        break;
+          snakeBlocks[i].y--;
+          break;
 
-      case "down":
-        snakeBlocks[i].y++;
-        break;
+        case "down":
+          snakeBlocks[i].y++;
+          break;
 
-      case "left":
-        snakeBlocks[i].x--;
-        break;
+        case "left":
+          snakeBlocks[i].x--;
+          break;
 
-      case "right":
-        snakeBlocks[i].x++;
-        break;
+        case "right":
+          snakeBlocks[i].x++;
+          break;
       }
     }
-
     //Visuals
     for(let i = 1; i < len; i++) {
       Game.drawBlock(snakeBlocks[i])
     }
-
   },
-
 
   //Game timer starts
   start: function() {
@@ -219,5 +197,4 @@ Game = {
     Game.drawBlock(snake);
     Game.start();
   }
-  
 }
