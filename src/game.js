@@ -88,6 +88,9 @@ Game = {
     //Clear old snake head block
     Game.clearBlock(snake)
 
+    //Update the snake body
+    Game.updateSnake(snakeBlocks.length);
+
     // determines the new x and y values when changing direction
     snake.dir = direction;
 
@@ -118,7 +121,6 @@ Game = {
 
     else {
       Game.drawBlock(snake);
-      Game.updateSnake(snakeBlocks.length);
       Game.checkSegment();
     }
   },
@@ -126,6 +128,8 @@ Game = {
   //Adding a section to the snake
   addChild: function() {
     let endBlock = snakeBlocks[snakeBlocks.length-1];
+
+
     var seg = {
       //calculate coordinates based on direction
       y: endBlock.y,
@@ -142,13 +146,14 @@ Game = {
       break;
 
     case "left":
-      seg.y = endBlock.x + 1;
+      seg.x = endBlock.x + 1;
       break;
 
     case "right":
-      seg.y = endBlock.y - 1;
+      seg.x = endBlock.x - 1;
       break;
     }
+
 
     snakeBlocks.push(seg);
     
@@ -159,12 +164,13 @@ Game = {
     for(let i = 0; i < len; i++) {
       tempDirs.push(snakeBlocks[i].dir);
     }
+    //console.log(tempDirs);
 
     //Update snake segment directions
     for(let i = 1; i < len; i++) {
+      Game.clearBlock(snakeBlocks[i])
       snakeBlocks[i].dir = tempDirs[i-1];
     }
-    //console.log(snakeBlocks);
     tempDirs = [];
 
 
@@ -189,15 +195,10 @@ Game = {
       }
     }
 
-    //console.log(snakeBlocks)
-
     //Visuals
     for(let i = 1; i < len; i++) {
-      console.log(snakeBlocks[i])
-      Game.clearBlock(snakeBlocks[i])
       Game.drawBlock(snakeBlocks[i])
     }
-
 
   },
 
