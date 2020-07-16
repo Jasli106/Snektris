@@ -4,6 +4,8 @@ var x = 10;
 var y = 20;
 var snakeBlocks = new Array();
 var tempDirs = new Array();
+var snakeColor = "#75ba6d";
+var timeInterval = 400;
 
 Game = {
   //Setting up main grid
@@ -19,19 +21,29 @@ Game = {
     }
   },
 
-  //Drawing snake head block
+  //Drawing blocks
   drawBlock: function(block) {
     var parent = document.getElementById("grid");
-    parent.rows[block.y].cells[block.x].style.backgroundColor = "black";
+    parent.rows[block.y].cells[block.x].style.backgroundColor = snakeColor;
   },
 
   //Generate snake segment (goal/thing to collect)
   createSegment: function() {
     var x2 = Math.floor((Math.random() * x));
     var y2 = Math.floor((Math.random() * y));
-    segment = {x: x2, y: y2};
-    var parent = document.getElementById("grid");
-    parent.rows[y2].cells[x2].style.backgroundColor = "red";
+    let valid = true;
+    for(let i = 0; i < snakeBlocks.length; i++) {
+      if(x2 == snakeBlocks[i].x && y2 == snakeBlocks[i].y) {
+        valid = false;
+      }
+    }
+    if(valid==true) {
+      segment = {x: x2, y: y2};
+      var parent = document.getElementById("grid");
+      parent.rows[y2].cells[x2].style.backgroundColor = "red";
+    } else {
+      Game.createSegment();
+    }
   },
 
   //When segment collected
@@ -79,7 +91,8 @@ Game = {
     //Clear old snake head block
     Game.clearBlock(snake)
 
-    //Update the snake body
+    //Update the snake body and check if head runs into tail
+    Game.checkCollision();
     Game.updateSnake(snakeBlocks.length);
 
     // determines the new x and y values when changing direction
@@ -111,6 +124,12 @@ Game = {
       Game.drawBlock(snake);
       Game.checkSegment();
     }
+    //Set timer interval
+    timeInterval = 400-(snakeBlocks.length*5);
+    if (timeInterval < 100) {
+      timeInterval = 100;
+    }
+    console.log(timeInterval);
   },
 
   //Adding a section to the snake
@@ -181,11 +200,21 @@ Game = {
     }
   },
 
+  //Check if snake collides with tail
+  checkCollision: function() {
+    for(let i = 1; i < snakeBlocks.length; i++) {
+      if((snakeBlocks[i].x == snake.x) && (snakeBlocks[i].y == snake.y)) {
+        document.getElementById("title").innerHTML = "Lost";
+        clearInterval(timer);
+      }
+    }
+  },
+
   //Game timer starts
   start: function() {
     Game.createSegment();
     document.onkeydown = Game.checkKey;
-    timer = setInterval(function(){Game.move();}, 400);
+    timer = setInterval(function(){Game.move();}, timeInterval);
     snakeBlocks.push(snake);
   },
 
